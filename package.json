@@ -1,6 +1,6 @@
 {
   "name": "dev-analise",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": {
     "name": "Marcelle Yanari",
     "email": "yanarimy@gmail.com"
@@ -10,5 +10,6 @@
     "moment-timezone": "^0.5.25"
   },
   "license": "MIT",
+  "main": "index.js",
   "repository": "yanari/dev-analise"
 }
