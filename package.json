@@ -1,0 +1,14 @@
+{
+  "name": "dev-analise",
+  "version": "1.0.0",
+  "author": {
+    "name": "Marcelle Yanari",
+    "email": "yanarimy@gmail.com"
+  },
+  "description": "Helpers da Análise",
+  "dependencies": {
+    "moment-timezone": "^0.5.25"
+  },
+  "license": "MIT",
+  "repository": "yanari/dev-analise"
+}
