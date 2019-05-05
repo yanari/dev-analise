@@ -1,4 +1,4 @@
-import {format} from 'utils/moment';
+import {format} from './utils/moment';
 
 export function getFormattedAddressDescription (fullAddress) {
   const street = (
