@@ -1,4 +1,4 @@
-import {format} from 'utils/moment';
+import {format} from './utils/moment';
 
 export function getFormattedAddressDescription (fullAddress) {
   const street = (
@@ -39,7 +39,7 @@ export function getFormattedDateDescriptions (initDateHour, endDateHour) {
 }
 
 export function removeBrTagFromParagraph (html) {
-  return html ? html.replace(/<p><br><\/p>/g, '') : null;
+  return html ? html.replace(/<(.+)><br><\/\1>/g, '') : null;
 }
 
 export function getTwitterId (value) {
