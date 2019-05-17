@@ -38,7 +38,7 @@ export function getFormattedDateDescriptions (initDateHour, endDateHour) {
   return [initDateHourDescription, endDateHourDescription];
 }
 
-export function removeBrTagFromParagraph (html) {
+export function removeEmptyTag (html) {
   return html ? html.replace(/<(.+)><br><\/\1>/g, '') : null;
 }
 
