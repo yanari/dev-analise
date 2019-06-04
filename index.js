@@ -1,47 +1,3 @@
-import {format} from './utils/moment';
-
-export function getFormattedAddressDescription (fullAddress) {
-  const street = (
-    fullAddress.get('number')
-      ? fullAddress.get('line1')
-      : fullAddress.get('line1') + ' '
-  ); // required
-  const streetNumber = (
-    fullAddress.get('number')
-      ? ', ' + fullAddress.get('number') + ' '
-      : ''
-  );
-  const streetComplement = (
-    fullAddress.get('complement')
-      ? '- ' + fullAddress.get('complement')
-      : ''
-  );
-  const neighbourhood = (
-    fullAddress.get('line2')
-      ? ', ' + fullAddress.get('line2') + ' '
-      : ''
-  );
-  const cityDescription = '- ' + fullAddress.get('city_desc'); // required
-  return street + streetNumber + streetComplement + neighbourhood + cityDescription;
-}
-
-export function getFormattedDateDescriptions (initDateHour, endDateHour) {
-  const initDateHourDescription = format('DD [de] MMMM [de] YYYY [-] hh:mm', initDateHour);
-  let endDateHourDescription = format('DD [de] MMMM [de] YYYY [-] hh:mm', endDateHour);
-  const initDateDescription = initDateHourDescription.split(' - ')[0];
-  if (endDateHourDescription) {
-    const [endDateDescription, endHourDescription] = endDateHourDescription.split(' - ');
-    if (initDateDescription === endDateDescription) { // check if same day
-      endDateHourDescription = endHourDescription;
-    }
-  }
-  return [initDateHourDescription, endDateHourDescription];
-}
-
-export function removeEmptyTag (html) {
-  return html ? html.replace(/<(.+)><br><\/\1>/g, '') : null;
-}
-
 export function getTwitterId (value) {
   const urlParts = value.split('/status/');
   let id = urlParts[1];
@@ -71,6 +27,10 @@ export function getVimeoId (value) {
   return id;
 }
 
+export function isValidTwitterUrl (value) {
+  return (value.indexOf('twitter.com') > -1) && getTwitterId(value);
+}
+
 export function isValidYoutubeUrl (value) {
   return (value.indexOf('youtube.com') > -1) && getYoutubeId(value);
 }
@@ -89,21 +49,42 @@ export function getVimeoOrYoutubeSrc (url) {
     videoId = getYoutubeId(url);
     videoPath = '//www.youtube.com/embed';
   }
-  console.log(videoId);
   return videoId ? videoPath + '/' + videoId : null;
 }
 
-export function getFormQueryString (formDom) {
-  // Tratamento pra enviar pro get apenas parâmetros com valor
-  const elementsLength = formDom.elements.length;
-  let count = 0;
-  const queryString = {};
-  for (let i = 0; i < elementsLength; i++) {
-    const element = formDom.elements[i];
-    if (element.value) {
-      queryString[element.name] = element.value;
-      count++;
+export function getAddressDescription (fullAddress) {
+  if (!fullAddress) return null;
+  if (fullAddress.size === 0) return null;
+  if (!fullAddress.get('city_desc')) return null;
+  let description = '';
+  if (fullAddress.get('line1')) {
+    description += fullAddress.get('line1');
+    if (fullAddress.get('number')) {
+      description += ', ' + fullAddress.get('number');
+    }
+    if (fullAddress.get('line2')) {
+      description += ' - ' + fullAddress.get('line2');
+    }
+    if (fullAddress.get('complement')) {
+      description += ' - ' + fullAddress.get('complement');
     }
   }
-  return count === 0 ? null : queryString;
+  description += description ? ' - ' + fullAddress.get('city_desc') : fullAddress.get('city_desc');
+  return description;
+}
+
+export function removeEmptyTag (html) {
+  return html ? html.replace(/<(.+)><br><\/\1>/g, '') : null;
+}
+
+export function isValidAwsS3Src (value) {
+  return value.substr(0, 4) === 'cms/';
+}
+
+export function resolveImageSrc ({awsS3Url, src}) {
+  if (!src) return null;
+  if (src.indexOf('//') === -1 && awsS3Url && isValidAwsS3Src(src)) {
+    return awsS3Url + '/' + src;
+  }
+  return src;
 }
