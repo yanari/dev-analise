@@ -14,7 +14,7 @@ import {getFormattedAddressDescription} from 'dev-analise';
 
 import {getFormattedDateDescriptions} from 'dev-analise';
 
-import {removeBrTagFromParagraph} from 'dev-analise';
+import {removeEmptyTag} from 'dev-analise';
 
 import {getTwitterId} from 'dev-analise';
 
